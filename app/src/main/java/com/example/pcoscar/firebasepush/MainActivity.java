@@ -1,11 +1,14 @@
 package com.example.pcoscar.firebasepush;
 
+import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pcoscar.firebasepush.Model.MyResponse;
@@ -22,7 +25,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     Button btnSendData;
-    EditText edTitle , edContent;
+    EditText edTitle , edContent ;
+    TextView  txtmensaje;
 
     APIService mService;
 
@@ -46,11 +50,22 @@ public class MainActivity extends AppCompatActivity {
         btnSendData=findViewById(R.id.btnSendData);
         edContent=findViewById(R.id.edContent);
         edTitle=findViewById(R.id.edTitle);
+        txtmensaje=findViewById(R.id.txtmensaje);
+
+        String release = Build.VERSION.RELEASE;
+        int sdkVersion = Build.VERSION.SDK_INT;
+       txtmensaje.setText("Android SDK: " + sdkVersion +  "/" + release.toString());
+
+
+
+
 
         btnSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Notification notification=new Notification(edTitle.getText().toString(),edContent.getText().toString());
+
+
                 Sender sender=new Sender(Common.currentToken,notification);
                 mService.sendNotification(sender)
                         .enqueue(new Callback<MyResponse>() {
@@ -71,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+
 
 
 
